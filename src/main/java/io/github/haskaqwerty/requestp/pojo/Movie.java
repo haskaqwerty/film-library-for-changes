@@ -1,11 +1,12 @@
-package io.github.haskaqwerty.filmlibrary.pojo;
+package io.github.haskaqwerty.requestp.pojo;
 
 import lombok.*;
 
 @Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
-@ToString
 @AllArgsConstructor
 public class Movie {
     private Integer id;

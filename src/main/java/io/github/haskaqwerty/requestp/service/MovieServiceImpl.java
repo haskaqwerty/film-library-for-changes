@@ -1,46 +1,39 @@
-package io.github.haskaqwerty.filmlibrary.service;
+package io.github.haskaqwerty.requestp.service;
 
-import io.github.haskaqwerty.filmlibrary.dao.MovieDaoImpl;
-import io.github.haskaqwerty.filmlibrary.pojo.Movie;
+import io.github.haskaqwerty.requestp.dao.MovieDaoImpl;
+import io.github.haskaqwerty.requestp.pojo.Movie;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class MovieServiceImpl implements MovieService{
+public class MovieServiceImpl implements MovieService {
     MovieDaoImpl movieDao = new MovieDaoImpl();
     @Override
-    public boolean create(Movie movie) {
-        boolean result = movieDao.create(movie);
-        return result;
+    public Movie create(Movie movie) {
+        return movieDao.create(movie);
     }
 
     @Override
-    public List<Movie> readAll() {
-        List<Movie> movieList = new ArrayList<>();
-        movieList = movieDao.getAll();
-        System.out.println(movieList.toString());
+    public List<Movie> getAll() {
+        List<Movie> movieList = new ArrayList<>(movieDao.getAll());
         return movieList;
     }
 
     @Override
-    public Movie read(int id) {
-        Movie movie = new Movie();
-        movie= movieDao.getMovieById(id);
-        System.out.println(movie.toString());
-        return movie;
+    public Movie get(int id) {
+        return movieDao.getMovieById(id);
     }
 
     @Override
-    public boolean update(Movie movie, int id) {
-        boolean result = movieDao.update(movie, id);
-        return result;
+    public Movie update(Movie movie, int id) {
+        return movieDao.update(movie, id);
     }
 
     @Override
-    public boolean delete(int id) {
-        boolean result = movieDao.delete(id);
-        return result;
+    public Movie delete(int id) {
+        return movieDao.delete(id);
+
     }
 }

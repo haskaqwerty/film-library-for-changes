@@ -1,18 +1,14 @@
-package io.github.haskaqwerty.filmlibrary.pojo;
+package io.github.haskaqwerty.requestp.pojo;
 
 import lombok.*;
 
+@Data
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
-@Setter
-@ToString
+@AllArgsConstructor
 public class Genre {
     private int id;
     private String name;
-    public Genre(int id, String name){
-        this.name=name;
-        this.id=id;
-    }
-
 }

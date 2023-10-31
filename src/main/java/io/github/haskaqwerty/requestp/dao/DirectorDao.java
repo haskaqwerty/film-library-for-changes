@@ -1,14 +1,14 @@
-package io.github.haskaqwerty.filmlibrary.dao;
+package io.github.haskaqwerty.requestp.dao;
 
-import io.github.haskaqwerty.filmlibrary.pojo.Director;
+import io.github.haskaqwerty.requestp.pojo.Director;
 
 import java.util.List;
 
 public interface DirectorDao {
-    Director getDirectorById(int id);
+    Director getDirectorById(Integer id);
     List<Director> getAll();
-    boolean create(Director director);
-    boolean update(Director director,int id);
-    boolean delete(int id);
+    Director create(Director director);
+    Director update(Director director, Integer id);
+    Director delete(Integer id);
 
 }

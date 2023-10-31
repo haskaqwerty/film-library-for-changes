@@ -1,6 +1,6 @@
-package io.github.haskaqwerty.filmlibrary.dao;
+package io.github.haskaqwerty.requestp.dao;
 
-import io.github.haskaqwerty.filmlibrary.pojo.Director;
+import io.github.haskaqwerty.requestp.pojo.Director;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,15 +11,14 @@ public class DirectorDaoImpl implements DirectorDao {
     public static final int DIRECTOR_FIRST_NAME_INDEX = 2;
     public static final int DIRECTOR_LAST_NAME_INDEX = 3;
     public static final int DATE_INDEX = 4;
-    private String url = "jdbc:postgresql://localhost:5432/postgres";
-    private String username = "postgresuser";
-    private String password = "postgres";
+    public static final int COUNT_VAL = 4;
+
     static String sqlExpression;
 
     @Override
-    public Director getDirectorById(int id) {
+    public Director getDirectorById(Integer id) {
         Director result = null;
-        sqlExpression = "select * from directors where id = ? limit 1";
+        sqlExpression = "select * from directors where id = ?";
         Connection connection = null;
         try {
             connection = ConnectionManagerImpl.getConnection();
@@ -65,7 +64,6 @@ public class DirectorDaoImpl implements DirectorDao {
                         .birthdayDate(resultSet.getDate(DATE_INDEX))
                         .build());
             }
-
                 resultSet.close();
                 statement.close();
                 connection.close();
@@ -84,9 +82,9 @@ public class DirectorDaoImpl implements DirectorDao {
     }
 
     @Override
-    public boolean create(Director director) {
-        boolean result = false;
-        sqlExpression = "insert into directors values (?,?,?,?)";
+    public Director create(Director director) {
+        Director result = null;
+        sqlExpression = "insert into directors values (?,?,?,?) returning *";
         Connection connection = null;
         try {
             connection = ConnectionManagerImpl.getConnection();
@@ -95,18 +93,17 @@ public class DirectorDaoImpl implements DirectorDao {
             preparedStatement.setString(DIRECTOR_FIRST_NAME_INDEX,director.getFirstname());
             preparedStatement.setString(DIRECTOR_LAST_NAME_INDEX,director.getLastname());
             preparedStatement.setDate(DATE_INDEX,(Date) director.getBirthdayDate());
-            int resultSet = preparedStatement.executeUpdate();
-            if (resultSet == 0) {
-                System.out.println("Режиссер не добавлен");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+                result = (Director.builder()
+                        .id(resultSet.getInt(ID_INDEX))
+                        .firstname(resultSet.getString(DIRECTOR_FIRST_NAME_INDEX))
+                        .lastname(resultSet.getString(DIRECTOR_LAST_NAME_INDEX))
+                        .birthdayDate(resultSet.getDate(DATE_INDEX))
+                        .build());
+                resultSet.close();
                 preparedStatement.close();
                 connection.close();
-                return result;
-            } else{
-                preparedStatement.close();
-                connection.close();}
-            System.out.println("Режиссер добавлен");
-            result = true;
-            return  result;
         } catch (SQLException e) {
             try {
                 connection.close();
@@ -115,35 +112,33 @@ public class DirectorDaoImpl implements DirectorDao {
             }
             throw new RuntimeException(e);
         }
-
-
+        return  result;
     }
 
     @Override
-    public boolean update(Director director, int id) {
-        boolean result = false;
-        sqlExpression = "update directors set firstname=?,lastname=?,datebirthday=? where id = ?";
+    public Director update(Director director, Integer id) {
+        Director result = null;
+        sqlExpression = "update directors set firstname=?,lastname=?,datebirthday=? where id = ? returning *";
+        int move=1;
         Connection connection = null;
         try {
             connection = ConnectionManagerImpl.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlExpression);
-            preparedStatement.setString(DIRECTOR_FIRST_NAME_INDEX-1,director.getFirstname());
-            preparedStatement.setString(DIRECTOR_LAST_NAME_INDEX-1,director.getLastname());
-            preparedStatement.setDate(DATE_INDEX-1,(Date)director.getBirthdayDate());
-            preparedStatement.setInt(ID_INDEX+3,id);
-            int res = preparedStatement.executeUpdate();
-
-            if (res == 0) {
-                System.out.println("Режиссер не обновлен");
-                preparedStatement.close();
-                connection.close();
-                return result;
-            } else{
+            preparedStatement.setString(DIRECTOR_FIRST_NAME_INDEX-move,director.getFirstname());
+            preparedStatement.setString(DIRECTOR_LAST_NAME_INDEX-move,director.getLastname());
+            preparedStatement.setDate(DATE_INDEX-move,(Date)director.getBirthdayDate());
+            preparedStatement.setInt(ID_INDEX+COUNT_VAL-move,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+                result = (Director.builder()
+                        .id(resultSet.getInt(ID_INDEX))
+                        .firstname(resultSet.getString(DIRECTOR_FIRST_NAME_INDEX))
+                        .lastname(resultSet.getString(DIRECTOR_LAST_NAME_INDEX))
+                        .birthdayDate(resultSet.getDate(DATE_INDEX))
+                        .build());
+            resultSet.close();
             preparedStatement.close();
-            connection.close();}
-            System.out.println("Режиссер обновлен");
-            result = true;
-            return  result;
+            connection.close();
         } catch (SQLException e) {
             try {
                 connection.close();
@@ -152,25 +147,29 @@ public class DirectorDaoImpl implements DirectorDao {
             }
             throw new RuntimeException(e);
         }
-
+        return result;
     }
 
     @Override
-    public boolean delete(int id) {
-        boolean result = false;
-        sqlExpression = "delete from directors where id = ? ";
+    public Director delete(Integer id) {
+        Director result = null;
+        sqlExpression = "delete from directors where id = ? returning *";
         Connection connection = null;
         try {
             connection = ConnectionManagerImpl.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlExpression);
             preparedStatement.setInt(ID_INDEX, id);
-            int res = preparedStatement.executeUpdate();
-            if (res != 0) {
-                result=true;
-            }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+                result = (Director.builder()
+                        .id(resultSet.getInt(ID_INDEX))
+                        .firstname(resultSet.getString(DIRECTOR_FIRST_NAME_INDEX))
+                        .lastname(resultSet.getString(DIRECTOR_LAST_NAME_INDEX))
+                        .birthdayDate(resultSet.getDate(DATE_INDEX))
+                        .build());
             preparedStatement.close();
             connection.close();
-            return result;
+
         } catch (SQLException e) {
             try {
                 connection.close();
@@ -180,7 +179,7 @@ public class DirectorDaoImpl implements DirectorDao {
             }
             throw new RuntimeException(e);
         }
-
+        return result;
 
     }
 

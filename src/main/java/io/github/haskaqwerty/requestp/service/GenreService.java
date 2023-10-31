@@ -1,15 +1,15 @@
-package io.github.haskaqwerty.filmlibrary.service;
+package io.github.haskaqwerty.requestp.service;
 
-import io.github.haskaqwerty.filmlibrary.pojo.Genre;
+import io.github.haskaqwerty.requestp.pojo.Genre;
 
 import java.util.List;
 
 public interface GenreService {
-    boolean create(Genre genre);
-    List<Genre> readAll();
-    Genre read(int id);
-    boolean update(Genre genre, int id);
-    boolean delete(int id);
+    Genre create(Genre genre);
+    List<Genre> getAll();
+    Genre get(int id);
+    Genre update(Genre genre, int id);
+    Genre delete(int id);
 
 
 }

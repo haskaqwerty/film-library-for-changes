@@ -1,6 +1,6 @@
-package io.github.haskaqwerty.filmlibrary.dao;
+package io.github.haskaqwerty.requestp.dao;
 
-import io.github.haskaqwerty.filmlibrary.pojo.Genre;
+import io.github.haskaqwerty.requestp.pojo.Genre;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,14 +9,13 @@ import java.util.List;
 public class GenreDaoImpl implements GenreDao{
     public static final int ID_INDEX = 1;
     public static final int NAME_INDEX = 2;
-    private String url = "jdbc:postgresql://localhost:5432/postgres";
-    private String username = "postgresuser";
-    private String password = "postgres";
+    public static final int COUNT_VAL = 2;
+
     static String sqlExpression;
     @Override
-    public Genre getGenreById(int id) {
+    public Genre getGenreById(Integer id) {
         Genre result = null;
-        sqlExpression = "select * from genres where id = ? limit 1";
+        sqlExpression = "select * from genres where id = ?";
         Connection connection = null;
         try {
             connection = ConnectionManagerImpl.getConnection();
@@ -78,26 +77,24 @@ public class GenreDaoImpl implements GenreDao{
     }
 
     @Override
-    public boolean create(Genre genre) {
-        boolean result = false;
-        sqlExpression = "insert into genres values (?,?)";
+    public Genre create(Genre genre) {
+        Genre result = null;
+        sqlExpression = "insert into genres values (?,?) returning *";
         Connection connection = null;
         try {
             connection = ConnectionManagerImpl.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlExpression);
             preparedStatement.setInt(ID_INDEX,genre.getId());
             preparedStatement.setString(NAME_INDEX,genre.getName());
-            int resultSet = preparedStatement.executeUpdate();
-            if (resultSet == 0) {
-                System.out.println("Жанр не добавлен");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            result = Genre.builder()
+                    .id(resultSet.getInt(ID_INDEX))
+                    .name(resultSet.getString(NAME_INDEX))
+                    .build();
+                resultSet.close();
                 preparedStatement.close();
                 connection.close();
-                return result;
-            } else{
-                preparedStatement.close();
-                connection.close();}
-            System.out.println("Жанр добавлен");
-            result = true;
             return  result;
         } catch (SQLException e) {
             try {
@@ -108,31 +105,28 @@ public class GenreDaoImpl implements GenreDao{
             throw new RuntimeException(e);
         }
 
-
     }
 
     @Override
-    public boolean update(Genre genre, int id) {
-        boolean result = false;
-        sqlExpression = "update genres set name=?  where id = ?";
+    public Genre update(Genre genre, Integer id) {
+        Genre result = null;
+        sqlExpression = "update genres set name=?  where id = ? returning *";
+        int move=1;
         Connection connection = null;
         try {
             connection = ConnectionManagerImpl.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlExpression);
-            preparedStatement.setString(NAME_INDEX-1,genre.getName());
-            preparedStatement.setInt(ID_INDEX+1,id);
-            int res = preparedStatement.executeUpdate();
-            if (res == 0) {
-                System.out.println("Жанр не обновлен");
+            preparedStatement.setString(NAME_INDEX-move,genre.getName());
+            preparedStatement.setInt(ID_INDEX+COUNT_VAL-move,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            result = Genre.builder()
+                    .id(resultSet.getInt(ID_INDEX))
+                    .name(resultSet.getString(NAME_INDEX))
+                    .build();
+                resultSet.close();
                 preparedStatement.close();
                 connection.close();
-                return result;
-            } else{
-                preparedStatement.close();
-                connection.close();}
-            System.out.println("Жанр обновлен");
-            result = true;
-            return  result;
         } catch (SQLException e) {
             try {
                 connection.close();
@@ -141,24 +135,28 @@ public class GenreDaoImpl implements GenreDao{
             }
             throw new RuntimeException(e);
         }
+        return result;
     }
 
     @Override
-    public boolean delete(int id) {
-        boolean result = false;
-        sqlExpression = "delete from genres where id = ? ";
+    public Genre delete(Integer id) {
+        Genre result = null;
+        sqlExpression = "delete from genres where id = ? returning *";
         Connection connection = null;
         try {
             connection = ConnectionManagerImpl.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlExpression);
             preparedStatement.setInt(ID_INDEX, id);
-            int res = preparedStatement.executeUpdate();
-            if (res != 0) {
-                result=true;
-            }
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            result = Genre.builder()
+                    .id(resultSet.getInt(ID_INDEX))
+                    .name(resultSet.getString(NAME_INDEX))
+                    .build();
+            resultSet.close();
             preparedStatement.close();
             connection.close();
-            return result;
+
         } catch (SQLException e) {
             try {
                 connection.close();
@@ -168,6 +166,6 @@ public class GenreDaoImpl implements GenreDao{
             }
             throw new RuntimeException(e);
         }
-
+        return result;
     }
 }

@@ -1,46 +1,39 @@
-package io.github.haskaqwerty.filmlibrary.service;
+package io.github.haskaqwerty.requestp.service;
 
-import io.github.haskaqwerty.filmlibrary.dao.GenreDaoImpl;
-import io.github.haskaqwerty.filmlibrary.pojo.Genre;
+import io.github.haskaqwerty.requestp.dao.GenreDaoImpl;
+import io.github.haskaqwerty.requestp.pojo.Genre;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class GenreServiceImpl implements GenreService{
+public class GenreServiceImpl implements GenreService {
     GenreDaoImpl genreDao = new GenreDaoImpl();
     @Override
-    public boolean create(Genre genre) {
-        boolean result = genreDao.create(genre);
-        return result;
+    public Genre create(Genre genre) {
+        return genreDao.create(genre);
+
     }
 
     @Override
-    public List<Genre> readAll() {
-        List<Genre> genreList = new ArrayList<>();
-        genreList = genreDao.getAll();
-        System.out.println(genreList.toString());
+    public List<Genre> getAll() {
+        List<Genre> genreList = new ArrayList<>(genreDao.getAll());
         return genreList;
     }
 
     @Override
-    public Genre read(int id) {
-        Genre genre = new Genre();
-        genre = genreDao.getGenreById(id);
-        System.out.println(genre.toString());
-        return genre;
+    public Genre get(int id) {
+        return genreDao.getGenreById(id);
     }
 
     @Override
-    public boolean update(Genre genre, int id) {
-        boolean result = genreDao.update(genre, id);
-        return result;
+    public Genre update(Genre genre, int id) {
+        return genreDao.update(genre, id);
     }
 
     @Override
-    public boolean delete(int id) {
-        boolean result = genreDao.delete(id);
-        return result;
+    public Genre delete(int id) {
+        return genreDao.delete(id);
     }
 }

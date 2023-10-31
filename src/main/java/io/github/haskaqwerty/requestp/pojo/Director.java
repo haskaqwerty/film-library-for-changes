@@ -1,14 +1,14 @@
-package io.github.haskaqwerty.filmlibrary.pojo;
+package io.github.haskaqwerty.requestp.pojo;
 
 import lombok.*;
 
 import java.util.Date;
 
+@Data
 @Getter
-@Builder
 @Setter
+@Builder
 @NoArgsConstructor
-@ToString
 @AllArgsConstructor
 
 public class Director {

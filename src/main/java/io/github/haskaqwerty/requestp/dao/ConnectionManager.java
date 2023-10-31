@@ -1,8 +1,10 @@
-package io.github.haskaqwerty.filmlibrary.dao;
+package io.github.haskaqwerty.requestp.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public interface ConnectionManager {
-    Connection getConnection() throws SQLException;
+    static Connection getConnection() throws SQLException {
+        return null;
+    }
 }

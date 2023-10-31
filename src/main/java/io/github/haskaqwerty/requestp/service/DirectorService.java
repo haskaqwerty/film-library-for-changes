@@ -1,15 +1,15 @@
-package io.github.haskaqwerty.filmlibrary.service;
+package io.github.haskaqwerty.requestp.service;
 
-import io.github.haskaqwerty.filmlibrary.pojo.Director;
+import io.github.haskaqwerty.requestp.pojo.Director;
 
 import java.util.List;
 
 public interface DirectorService {
-    boolean create(Director director);
-    List<Director> readAll();
-    Director read(int id);
-    boolean update(Director director, int id);
-    boolean delete(int id);
+    Director create(Director director);
+    List<Director> getAll();
+    Director get(int id);
+    Director update(Director director, int id);
+    Director delete(int id);
 
 
 }

@@ -1,15 +1,15 @@
-package io.github.haskaqwerty.filmlibrary.service;
+package io.github.haskaqwerty.requestp.service;
 
-import io.github.haskaqwerty.filmlibrary.pojo.Movie;
+import io.github.haskaqwerty.requestp.pojo.Movie;
 
 import java.util.List;
 
 public interface MovieService {
-    boolean create(Movie movie);
-    List<Movie> readAll();
-    Movie read(int id);
-    boolean update(Movie movie, int id);
-    boolean delete(int id);
+    Movie create(Movie movie);
+    List<Movie> getAll();
+    Movie get(int id);
+    Movie update(Movie movie, int id);
+    Movie delete(int id);
 
 
 }

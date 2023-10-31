@@ -1,17 +1,17 @@
-package io.github.haskaqwerty.filmlibrary.dao;
+package io.github.haskaqwerty.requestp.dao;
 
-import io.github.haskaqwerty.filmlibrary.pojo.Movie;
+import io.github.haskaqwerty.requestp.pojo.Movie;
 
 import java.util.List;
 
 public interface MovieDao {
 
-     Movie getMovieById(int id);
+     Movie getMovieById(Integer id);
 
     List<Movie> getAll();
-    boolean create(Movie movie);
-    boolean update(Movie movie,int id);
-    boolean delete(int id);
+    Movie create(Movie movie);
+    Movie update(Movie movie, Integer id);
+    Movie delete(Integer id);
 
 
 }
