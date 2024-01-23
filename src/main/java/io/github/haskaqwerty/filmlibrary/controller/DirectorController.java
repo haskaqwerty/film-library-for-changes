@@ -1,7 +1,7 @@
-package io.github.haskaqwerty.requestp.controller;
+package io.github.haskaqwerty.filmlibrary.controller;
 
-import io.github.haskaqwerty.requestp.pojo.Director;
-import io.github.haskaqwerty.requestp.service.DirectorServiceImpl;
+import io.github.haskaqwerty.filmlibrary.pojo.Director;
+import io.github.haskaqwerty.filmlibrary.service.DirectorServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,6 @@ import java.util.List;
 public class DirectorController {
 
         private final DirectorServiceImpl directorService;
-
 
         @PostMapping(value = "/directors")
         public ResponseEntity<Director> createDirector(@RequestBody Director director){

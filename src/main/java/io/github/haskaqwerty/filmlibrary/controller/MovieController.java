@@ -1,7 +1,7 @@
-package io.github.haskaqwerty.requestp.controller;
+package io.github.haskaqwerty.filmlibrary.controller;
 
-import io.github.haskaqwerty.requestp.pojo.Movie;
-import io.github.haskaqwerty.requestp.service.MovieServiceImpl;
+import io.github.haskaqwerty.filmlibrary.pojo.Movie;
+import io.github.haskaqwerty.filmlibrary.service.MovieServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +17,8 @@ public class MovieController {
 
     @PostMapping(value = "/movies")
     public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
-        final Movie created = movieService.create(movie);
-        return created != null
-                ? new ResponseEntity<>(created, HttpStatus.CREATED)
+        return movieService.create(movie)
+                ? new ResponseEntity<>(HttpStatus.CREATED)
                 : new ResponseEntity(HttpStatus.NOT_MODIFIED);
 
     }
@@ -34,25 +33,23 @@ public class MovieController {
 
     @GetMapping(value = "/movies/{id}")
     public ResponseEntity<Movie> getMovieById(@PathVariable(name = "id") Integer id) {
-        final Movie movie = movieService.get(id);
+        final Movie movie = movieService.getById(id);
         return movie != null
                 ? new ResponseEntity<>(movie, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping(value = "/movies/{id}")
-    public ResponseEntity<Movie> updateMovie(@PathVariable(name = "id") Integer id, @RequestBody Movie movie) {
-        final Movie updated = movieService.update(movie, id);
-        return updated != null
-                ? new ResponseEntity<>(updated ,HttpStatus.OK)
+    public ResponseEntity updateMovie(@PathVariable(name = "id") Integer id, @RequestBody Movie movie) {
+        return movieService.update(movie, id)
+                ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
     @DeleteMapping(value = "/movies/{id}")
-    public ResponseEntity<Movie> deleteMovie(@PathVariable(name = "id") Integer id) {
-        final Movie deleted = movieService.delete(id);
-        return deleted != null
-                ? new ResponseEntity<>(deleted, HttpStatus.OK)
+    public ResponseEntity deleteMovie(@PathVariable(name = "id") Integer id) {
+        return movieService.delete(id)
+                ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 }

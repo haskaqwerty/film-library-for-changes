@@ -1,6 +1,6 @@
-package io.github.haskaqwerty.requestp.service;
+package io.github.haskaqwerty.filmlibrary.service;
 
-import io.github.haskaqwerty.requestp.pojo.Director;
+import io.github.haskaqwerty.filmlibrary.pojo.Director;
 
 import java.util.List;
 

@@ -1,17 +1,20 @@
-package io.github.haskaqwerty.requestp.service;
+package io.github.haskaqwerty.filmlibrary.service;
 
-import io.github.haskaqwerty.requestp.dao.MovieDaoImpl;
-import io.github.haskaqwerty.requestp.pojo.Movie;
+import io.github.haskaqwerty.filmlibrary.dao.MovieDaoImpl;
+import io.github.haskaqwerty.filmlibrary.pojo.Movie;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MovieServiceImpl implements MovieService {
-    MovieDaoImpl movieDao = new MovieDaoImpl();
+
+    private final MovieDaoImpl movieDao;
+
     @Override
-    public Movie create(Movie movie) {
+    public boolean create(Movie movie) {
         return movieDao.create(movie);
     }
 
@@ -22,17 +25,17 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie get(int id) {
+    public Movie getById(int id) {
         return movieDao.getMovieById(id);
     }
 
     @Override
-    public Movie update(Movie movie, int id) {
+    public boolean update(Movie movie, int id) {
         return movieDao.update(movie, id);
     }
 
     @Override
-    public Movie delete(int id) {
+    public boolean delete(int id) {
         return movieDao.delete(id);
 
     }

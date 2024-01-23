@@ -1,19 +1,22 @@
-package io.github.haskaqwerty.requestp.service;
+package io.github.haskaqwerty.filmlibrary.service;
 
-import io.github.haskaqwerty.requestp.dao.GenreDaoImpl;
-import io.github.haskaqwerty.requestp.pojo.Genre;
+import io.github.haskaqwerty.filmlibrary.dao.GenreDaoImpl;
+import io.github.haskaqwerty.filmlibrary.pojo.Genre;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {
-    GenreDaoImpl genreDao = new GenreDaoImpl();
-    @Override
-    public Genre create(Genre genre) {
-        return genreDao.create(genre);
 
+    private final GenreDaoImpl genreDao;
+    @Override
+    public boolean create(Genre genre) {
+        return genreDao.create(genre);
     }
 
     @Override
@@ -28,12 +31,12 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre update(Genre genre, int id) {
+    public boolean update(Genre genre, int id) {
         return genreDao.update(genre, id);
     }
 
     @Override
-    public Genre delete(int id) {
+    public boolean delete(int id) {
         return genreDao.delete(id);
     }
 }

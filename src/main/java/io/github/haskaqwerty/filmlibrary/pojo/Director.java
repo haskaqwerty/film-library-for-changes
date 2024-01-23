@@ -1,4 +1,4 @@
-package io.github.haskaqwerty.requestp.pojo;
+package io.github.haskaqwerty.filmlibrary.pojo;
 
 import lombok.*;
 

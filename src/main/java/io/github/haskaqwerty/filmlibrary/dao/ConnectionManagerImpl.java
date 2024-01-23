@@ -1,4 +1,4 @@
-package io.github.haskaqwerty.requestp.dao;
+package io.github.haskaqwerty.filmlibrary.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

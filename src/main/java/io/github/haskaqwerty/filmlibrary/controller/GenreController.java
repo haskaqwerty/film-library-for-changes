@@ -1,7 +1,7 @@
-package io.github.haskaqwerty.requestp.controller;
+package io.github.haskaqwerty.filmlibrary.controller;
 
-import io.github.haskaqwerty.requestp.pojo.Genre;
-import io.github.haskaqwerty.requestp.service.GenreServiceImpl;
+import io.github.haskaqwerty.filmlibrary.pojo.Genre;
+import io.github.haskaqwerty.filmlibrary.service.GenreServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,17 +12,14 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class GenreController {
+
         private final GenreServiceImpl genreService;
 
-
-
         @PostMapping(value = "/genres")
-        public ResponseEntity<Genre> createGenre(@RequestBody Genre genre){
-            final Genre created = genreService.create(genre);
-            return created != null
-                    ? new ResponseEntity<>(genre,HttpStatus.CREATED)
+        public ResponseEntity createGenre(@RequestBody Genre genre){
+            return genreService.create(genre)
+                    ? new ResponseEntity<>(HttpStatus.CREATED)
                     : new ResponseEntity(HttpStatus.NOT_MODIFIED);
-
         }
 
         @GetMapping(value = "/genres")
@@ -41,24 +38,19 @@ public class GenreController {
                     : new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-
         @PutMapping(value = "/genres/{id}")
-        public ResponseEntity<Genre> updateGenre(@PathVariable(name = "id") Integer id, @RequestBody Genre genre){
-            final Genre updated = genreService.update(genre,id);
-            return updated !=null
-                    ? new ResponseEntity<>(updated,HttpStatus.OK)
+        public ResponseEntity updateGenre(@PathVariable(name = "id") Integer id, @RequestBody Genre genre){
+            return genreService.update(genre,id)
+                    ? new ResponseEntity<>(HttpStatus.OK)
                     : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         }
-
 
         @DeleteMapping(value = "/genres/{id}")
-        public ResponseEntity<Genre> deleteGenre (@PathVariable(name = "id") Integer id){
-            final Genre deleted = genreService.delete(id);
-            return deleted != null
-                    ? new ResponseEntity<>(deleted, HttpStatus.OK)
+        public ResponseEntity deleteGenre (@PathVariable(name = "id") Integer id){
+            return genreService.delete(id)
+                    ? new ResponseEntity<>(HttpStatus.OK)
                     : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         }
-
     }
 
 

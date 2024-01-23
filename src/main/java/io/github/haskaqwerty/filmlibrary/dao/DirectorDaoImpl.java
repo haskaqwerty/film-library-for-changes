@@ -1,19 +1,14 @@
-package io.github.haskaqwerty.requestp.dao;
+package io.github.haskaqwerty.filmlibrary.dao;
 
-import io.github.haskaqwerty.requestp.pojo.Director;
+import io.github.haskaqwerty.filmlibrary.pojo.Director;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class DirectorDaoImpl implements DirectorDao {
-    public static final int ID_INDEX = 1;
-    public static final int DIRECTOR_FIRST_NAME_INDEX = 2;
-    public static final int DIRECTOR_LAST_NAME_INDEX = 3;
-    public static final int DATE_INDEX = 4;
-    public static final int COUNT_VAL = 4;
-
-    static String sqlExpression;
 
     @Override
     public Director getDirectorById(Integer id) {
